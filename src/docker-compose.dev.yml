@@ -1,0 +1,42 @@
+version: '3.5'
+services:
+  clickut.postgres:
+    image: postgres:14-alpine
+    container_name: clickut.postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: clickut
+    ports:
+      - 5432:5432
+    volumes:
+      - clickut.postgres:/var/lib/postgresql/data
+
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U admin -d test" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+    networks:
+      - clickut
+
+  betcar.pgadmin:
+    image: dpage/pgadmin4
+    container_name: clickut.pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "clickut@list.ru"
+      PGADMIN_DEFAULT_PASSWORD: "admin"
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    ports:
+      - 8082:80
+    networks:
+      - clickut
+
+volumes:
+  clickut.postgres:
+
+networks:
+  clickut:
+    driver: bridge
