@@ -12,9 +12,9 @@ export class CatalogService {
     private catalogRepository: Repository<CatalogEntity>,
   ) {}
 
-  async create(createCatalogDto: CreateCatalogDto): Promise<CatalogEntity> {
-    const user = this.catalogRepository.create(createCatalogDto);
-    return this.catalogRepository.save(user);
+  async createCatalog(createCatalogDto: CreateCatalogDto): Promise<CatalogEntity> {
+    const catalog = this.catalogRepository.create(createCatalogDto);
+    return this.catalogRepository.save(catalog);
   }
 
   async findAll(): Promise<CatalogEntity[]> {

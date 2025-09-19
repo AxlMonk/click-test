@@ -1,9 +1,24 @@
-import { Controller, Get, Post, Body, Param, Delete, Put, ParseIntPipe, HttpCode, HttpStatus, } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Patch,
+  ParseIntPipe,
+  HttpCode,
+  HttpStatus,
+  UseInterceptors, UploadedFile, ParseFilePipeBuilder,
+} from '@nestjs/common';
 import { CatalogService } from './catalog.service';
 import { CreateCatalogDto } from './dto/create-catalog.dto';
 import { UpdateCatalogDto } from './dto/update-catalog.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CatalogRdo } from './rdo/catalog.rdo';
+import { FileInterceptor } from '@nestjs/platform-express';
+import fs from 'fs';
+import * as XLSX from 'xlsx';
 
 @ApiTags('Каталог')
 @Controller('catalog')
@@ -16,7 +31,31 @@ export class CatalogController {
   })
   @Post()
   create(@Body() createCatalogDto: CreateCatalogDto) {
-    return this.catalogService.create(createCatalogDto);
+    return this.catalogService.createCatalog(createCatalogDto);
+  }
+
+  @Post('file')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadFile(
+    @UploadedFile(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({ fileType: 'vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
+        .build({ fileIsRequired: true }),
+    )
+      file: Express.Multer.File,
+  ) {
+
+    const filePath = `./uploads/${file.originalname}`;
+    fs.writeFileSync(filePath, file.buffer);
+
+    const workbook = XLSX.readFile(filePath);
+    const firstSheetName = workbook.SheetNames[0];
+    const worksheet = workbook.Sheets[firstSheetName];
+    const jsonData: any = XLSX.utils.sheet_to_json(worksheet);
+
+    fs.unlinkSync(filePath);
+
+    return jsonData;
   }
 
   @ApiResponse({
@@ -44,7 +83,7 @@ export class CatalogController {
     description: 'Успешно обновлено!.'
   })
   @HttpCode(HttpStatus.OK)
-  @Put(':id')
+  @Patch(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateCatalogDto: UpdateCatalogDto,

@@ -1,24 +1,13 @@
 import { IsNumber, IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CatalogRdo {
   @IsNumber()
   readonly id: number;
 
-  @IsString()
-  readonly article: string;
-
-  @IsString()
-  readonly name: string;
-
-  @IsString()
-  readonly brand: string;
-
-  @IsString()
-  readonly price: string;
-
-  @IsString()
-  readonly color: string;
-
-  @IsString()
-  readonly country: string;
+  @ApiProperty({
+    description: 'Данные',
+    example: []
+  })
+  public catalog: any[];
 }

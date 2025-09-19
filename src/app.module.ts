@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CatalogModule } from './catalog/catalog.module';
-import { UploaderModule } from './uploader/uploader.module';
+import { MulterModule } from '@nestjs/platform-express';
+
 
 @Module({
   imports: [
@@ -18,9 +17,11 @@ import { UploaderModule } from './uploader/uploader.module';
       synchronize: true,
     }),
     CatalogModule,
-    UploaderModule,
+    MulterModule.register({
+      dest: './uploads',
+    }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
