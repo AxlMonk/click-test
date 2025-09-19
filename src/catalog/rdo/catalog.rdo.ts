@@ -7,7 +7,7 @@ export class CatalogRdo {
 
   @ApiProperty({
     description: 'Данные',
-    example: []
+    example: {}
   })
-  public catalog: any[];
+  public catalog: any;
 }

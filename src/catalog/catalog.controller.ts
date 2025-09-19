@@ -55,7 +55,7 @@ export class CatalogController {
 
     fs.unlinkSync(filePath);
 
-    return jsonData;
+    return this.catalogService.parseFile(jsonData);
   }
 
   @ApiResponse({

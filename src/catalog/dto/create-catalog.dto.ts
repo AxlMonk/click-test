@@ -5,7 +5,8 @@ export class CreateCatalogDto {
 
   @ApiProperty({
     description: 'Данные',
-    example: []
+    example: '{}'
   })
-  public catalog: any[];
+  public catalog: any;
+
 }

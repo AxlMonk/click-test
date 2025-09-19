@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 export class UpdateCatalogDto {
   @ApiProperty({
     description: 'Данные',
-    example: []
+    example: {}
   })
-  public catalog: any[];
+  public catalog: any;
 }

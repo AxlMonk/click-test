@@ -6,8 +6,9 @@ export class CatalogEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: true, type: "json" })
-  catalog: any[];
+  @Column({ nullable: true, type: "json"  })
+  catalog: any;
+
 }
 
 

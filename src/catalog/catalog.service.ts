@@ -17,6 +17,16 @@ export class CatalogService {
     return this.catalogRepository.save(catalog);
   }
 
+  async parseFile(dataArray: any): Promise<void> {
+    let a: any = [];
+    a = dataArray.map((item: any, index: any) => {
+      const entity = new CatalogEntity();
+      entity.catalog = item
+      return this.catalogRepository.save(entity);
+    })
+   return a;
+  }
+
   async findAll(): Promise<CatalogEntity[]> {
     return this.catalogRepository.find();
   }
