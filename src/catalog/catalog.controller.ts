@@ -25,15 +25,6 @@ import * as XLSX from 'xlsx';
 export class CatalogController {
   constructor(private readonly catalogService: CatalogService) {}
 
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    description: 'Успех!'
-  })
-  @Post()
-  create(@Body() createCatalogDto: CreateCatalogDto) {
-    return this.catalogService.createCatalog(createCatalogDto);
-  }
-
   @Post('file')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(

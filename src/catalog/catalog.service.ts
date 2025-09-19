@@ -12,11 +12,6 @@ export class CatalogService {
     private catalogRepository: Repository<CatalogEntity>,
   ) {}
 
-  async createCatalog(createCatalogDto: CreateCatalogDto): Promise<CatalogEntity> {
-    const catalog = this.catalogRepository.create(createCatalogDto);
-    return this.catalogRepository.save(catalog);
-  }
-
   async parseFile(dataArray: any): Promise<void> {
     let a: any = [];
     a = dataArray.map((item: any, index: any) => {
